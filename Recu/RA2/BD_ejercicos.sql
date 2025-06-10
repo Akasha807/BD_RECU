@@ -45,51 +45,135 @@ create table if not exists comandes(
     id int primary key,
     foreign key (clients_id) reference clients(id) on delete set null
 );
+-- eliminar una tabla
+drop table <nom_taula>;
+drop table reserves;
 
--- alters tables
--- eliminar la tabla
-drop table  <nom_taula>
-drop table  reserva;
-
--- eliminar la tabla si existe
+-- eliminar la taula si existeix
 drop table if exists <nom_taula>;
 drop table if exists vehicles;
 
--- rename table
-rename table <nom_antic> to <nom_nou>;
-rename table clients to clients_antics;
-..
-rename table alumnes to estudiant;
 
--- añadir columna amb valor
--- alter table <nom_taula> add <columna> <valor>;
+-- renombrar
+Rename table <nom_taula> to <nom_taula_nou>;
+Rename table clients to clients_antics;
+Rename table comandes_null to comandes_especionals;
+Rename table alumnes to estudiants;
+
+-- modificar
+alter table productes add <nom_columna> <atribbut>;
 alter table productes add stock int;
-alter table clients_antics add actiu after email;
+-- despres 
+alter table <nom_taula> add <nom_columna> <atribbut> after  <nom_columna> <atribbut>;
+alter table clients_antics add actiu boolean after email;
 
--- eliminar columna
--- alter table <nom_tabla> drop <nom_columna>
-alter table categories drop categoria;
-alter clients_antics drop actiu;
--- cambiar el valor
-alter table <nom_columna> modify <nom> <nou_valor>
-alter table productes change categoria to double(6,2);
+-- eliminar
+alter table <nom_taula> drop <nom_columna>;
+alter table productes drop column categoria;
+alter table clients_antics drop column actiu;
 
--- cambiar el nom  i valor 
--- alter table <nom_table> change <nom_antic> <nom_nou> <valor_nou>
-alter table clients_antics modify nom nom_complet to varchar(100);
+-- modificar o cambiar
+alter table <nom_taula> modify <nom_columna> <mou_atribbut>;
+alter table productes modify preu float(6,2);
 
--- cambiar el nom 
-alter table <nom_tabla> rename <nom_antic> to <nou_name>
+alter table <nom_taula> change <nom_columna>  <nou_nom_columna> <mou_atribbut>;
+alter table  clients_antics change nom nom_complet varchar(100);
+
+alter table <nom_taula> rename <nom_columna> to  <nou_nom_columna>
 alter table clients_antics rename email to correu;
 
--- añadir restricciones
--- alter table <nom_taula> add <constrain> <nom_constraint> <tipus_restriccio> (nom_columna)
-alter table productes add constraint pk_producte  primaria key(id);
-alter table productes add constraint ck_producte check(stock>=0)(sou);
+-- afegeix las resticions
+alter table <nom_taula> add constraint <nom_constraint> <atribbut>(valor);
+alter table productes add constraint pk_productes primary key(id);
+
+alter table productes add constraint ck_producte check(stock>=0);
 
 -- eliminar restricions
--- alter table <nom_table> drop <nom_contraint>
-alter table productes drop pk_producte;
-alter table productes drop ck_producte;
+alter table <nom_taula> drop <contraint> <nom_constraint>;
+alter table productes drop primary key;
+alter table productes drop constraint ck_producte;
+
+
+-- general
+create database botiga;
+show databases;
+use trabajo;
+
+-- tablas
+create table if not exists client(
+    dni char(9),
+    nom varchar(30),
+    telefon varchar(9)
+);
+
+create table if not exists productes(
+    codi int,
+    nom varchar(20),
+    preu float,
+    desompte float default 0
+);
+
+-- tablas con restricions 
+create table if not exists empleat(
+    dni char(9) primary key,
+    nom varchar(30) not null,
+    email varchar(50) not null unique,
+    sou float not null check(sou>=100)
+);
+
+create table if not exists empleat(
+    num_habitacio int primary key,
+    tipus varchar(50) check(tipus in('doble','triple','suite'))
+);
+
+create table if not exists cotxe(
+    codi int auto_increment primary key,
+    model varchar(20) not null,
+    marca varchar(50) not null unique,
+    matricula varchar(60) unique,
+    color varchar(60)
+);
+-- doble primary key
+create table if not exists productes(
+    nom_hotel varchar(50),
+    num_habitacio int,
+    client_data date,
+    data_entrada date
+    constraint pk_productes primary key (nom_hotel,num_habitacio)
+);
+
+create table if not exists persona(
+    dni char(9) primary key,
+    nom varchar(30),
+);
+
+create table if not exists productes(
+    matriula int  primary key,
+    marca varchar(50) not null,
+    dni_propietri int,
+    constraint fK_producte foreign key (dni_propietri) references persona(id) on delete casade 
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
